@@ -1,0 +1,22 @@
+name: Build kubemq-community image and push to pesacr.azurecr.io
+
+on:
+  push:
+    branches: [ "main" ]
+    
+env:
+  #Image name equals repository name
+  IMAGE_NAME: ${{ github.event.repository.name }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Log into registry ${{ secrets.REGISTRY }}
+      run: docker login ${{ secrets.REGISTRY }} -u ${{ secrets.REGISTRY_LOGIN }} -p ${{ secrets.REGISTRY_PWD }}
+    - name: Build the image ${{ env.IMAGE_NAME }}
+      run: docker build --build-arg GITHUB_RUN_NUMBER=${{github.run_number}} . --file Dockerfile --tag ${{ secrets.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+    - name: Push the image ${{ env.IMAGE_NAME }} into registry ${{ secrets.REGISTRY }}
+      run: docker push ${{ secrets.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
