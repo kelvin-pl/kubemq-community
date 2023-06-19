@@ -17,6 +17,14 @@ Browse to [http://localhost:8080/](http://localhost:8080/) after installation an
 
 # Installation
 
+## Kubernetes
+
+Replace image  and apply .yaml using kubectl on Kubernetes:
+
+``` powershell  
+(irm https://deploy.kubemq.io/community) -replace 'kubemq/kubemq-community:latest','pesacr.azurecr.io/kubemq-community:latest' | kubectl apply -f -
+```  
+
 ## Docker
 
 Pull and run KubeMQ standalone docker container:
