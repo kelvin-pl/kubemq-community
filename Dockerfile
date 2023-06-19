@@ -1,27 +1,20 @@
-FROM kubemq/gobuilder as builder
+FROM golang:1.20 as builder
 ARG VERSION
 ARG GIT_COMMIT
 ARG BUILD_TIME
 ENV GOPATH=/go
 ENV PATH=$GOPATH:$PATH
 ENV ADDR=0.0.0.0
-ADD . $GOPATH/github.com/kubemq-io/kubemq-community
 WORKDIR $GOPATH/github.com/kubemq-io/kubemq-community
+ADD . .
 RUN go mod vendor
 RUN CGO_ENABLED=0 go build -a -mod=vendor -installsuffix cgo -ldflags="-w -s -X main.version=$VERSION" -o kubemq-run .
-FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
-MAINTAINER KubeMQ info@kubemq.io
+FROM scratch
 ENV GOPATH=/go
 ENV PATH=$GOPATH/bin:$PATH
-RUN mkdir /kubemq
-COPY --from=builder $GOPATH/github.com/kubemq-io/kubemq-community/kubemq-run ./kubemq
-COPY entrypoint.sh /
-RUN chown -R 1001:root  /kubemq && chmod g+rwX  /kubemq
+COPY --from=builder $GOPATH/github.com/kubemq-io/kubemq-community/kubemq-run /
 EXPOSE 50000
 EXPOSE 9090
 EXPOSE 8080
-#RUN adduser -D kubemq
-WORKDIR kubemq
-USER 1001
-CMD ["./kubemq-run","server"]
+CMD ["/kubemq-run","server"]
 
