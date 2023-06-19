@@ -2,7 +2,7 @@ name: Build kubemq-community image and push to pesacr.azurecr.io
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
     
 env:
   #Image name equals repository name
