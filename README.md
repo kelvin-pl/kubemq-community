@@ -4,6 +4,8 @@
 KubeMQ Community is the open-source version of KubeMQ, the Kubernetes native message broker.
 [More about KubeMQ](https://kubemq.io/)
 
+This version has been modified to allow to ru on Kubernetes.
+
 # New
 
 ## KubeMQ Web Interface
