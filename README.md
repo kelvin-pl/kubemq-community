@@ -32,7 +32,7 @@ Replace image  and apply .yaml using kubectl on Kubernetes:
 Pull and run KubeMQ standalone docker container:
 
 ``` bash  
-docker run -d -p 8080:8080 -p 50000:50000 -p 9090:9090 kubemq/kubemq-community:latest  
+docker run -d -p 8080:8080 -p 50000:50000 -p 9090:9090 pesacr.azurecr.io/kubemq-community:latest  
 ```  
 
 ## Binaries
